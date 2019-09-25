@@ -1,44 +1,40 @@
 const net = require('net');
+const { IP, PORT } = require("./constants");
 
-/**
- * Establishes connection with the game server
- */
 const connect = function() {
   const conn = net.createConnection({ 
-    host: '192.168.0.103',
-    port: 50541
+    host: IP,
+    port: PORT
   });
   // interpret incoming data as text
-  conn.on(`data`, (data) => {
-    console.log('', data);
+  conn.setEncoding('utf8'); 
+  conn.on("data", (data) => {
+    console.log("Server says: ", data)
   });
-  conn.setEncoding('utf8');  
+  
+  conn.on("connect", () => {
+    console.log("Successfully connected to game server!");
+    conn.write("Name: ADS");
+    conn.write("Say: can't catch me!");
+    // setTimeout(() => {
+    //   conn.write("Move: up");
+    // }, 500); 
+    // setTimeout(() => {
+    //   conn.write("Move: left");
+    // }, 1000); 
+    // setTimeout(() => {
+    //   conn.write("Move: left");
+    // }, 1500); 
+    // setTimeout(() => {
+    //   conn.write("Move: down");
+    // }, 2000); 
+    // setTimeout(() => {
+    //   conn.write("Move: down");
+    // }, 2500); 
 
-conn.on('connect', () => {
-  console.log('successfully connected');
-  conn.write('Name: ADS');
-
-  /*
-  setInterval(() => {
-    conn.write("Move: up");
-  },50)
-  */
-  conn.write("Move: up");
-  conn.write("Move: down");
-  conn.write("Move: left");
-  conn.write("Move: right");
-});
-
-//conn.on('connect', () => {
-  //conn.write("Move: up");
-//});
-
+  });
 
   return conn;
 };
 
-
-module.exports = {
-  connect,
-
-}
+module.exports = { connect };
