@@ -11,21 +11,22 @@ const connect = function() {
   // interpret incoming data as text
   conn.on(`data`, (data) => {
     console.log('', data);
+    
   });
-  conn.setEncoding('utf8'); 
+  conn.setEncoding('utf8');  
+
+conn.on('connect', () => {
+  console.log('succefully connected');
+  conn.write('Name: ADS');
+});
 
   
 
   return conn;
-}
+};
 
-
-
-
-console.log('Connecting ...');
-connect();
 
 module.exports = {
   connect,
-  
+
 }
